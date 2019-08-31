@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<style>
+    #divFrom {
+        width: 30%;
+        position: relative;
+        left: 35%;
+        margin-top: 10%;
+        background-color: rgb(200, 207, 204);
+        border-radius: 5%;
+        padding: 2%;
+    }
+
+    #divLogin {
+        width: 30%;
+        position: relative;
+        left: 35%;
+        margin-top: 10%;
+        background-color: rgb(200, 207, 204);
+        border-radius: 5%;
+        padding: 2%;
+    }
+
+    #feedback {
+        position: relative;
+    }
+
+    .feedColor {
+        color: red;
+    }
+
+    #navSignup,
+    #navLogin {
+        cursor: pointer;
+        position: relative;
+        left: 70%;
+
+    }
+
+    #background {
+        background-image: url("https://www.itseducation.asia/assets/images/bg-1005.jpg");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        width: 100%;
+    }
+</style>
+
+<body id="background">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgb(200, 207, 204);">
+        <a class=".navbar-brand" href="#" style="color:black"><b>KAT-ON</b></a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <span class="nav-link" id="navLogin">Login</span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link" id="navSignup">Sign up</span>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div id="divFrom">
+        <form>
+            <center>
+                <h1>Register</h1>
+            </center>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputfname">Firstname</label>
+                    <input type="text" class="form-control" id="inputfname" placeholder="Firstname">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputlname">Lastname</label>
+                    <input type="text" class="form-control" id="inputlname" placeholder="Lastname">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Password</label>
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                    <div id="feedback" class="feedColor"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+
+            <button id="btnSubmit" type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+
+        </form>
+    </div>
+    <div id="divLogin">
+        <form>
+            <center>
+                <h1>Login</h1>
+            </center>
+            <div class="form-group row">
+                <label for="loginEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="loginEmail" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="loginPassword" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10"><br><br>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                </div>
+            </div>
+            <button id="btnLogin" class="btn btn-success btn-lg btn-block">
+                <h4>Login</h4>
+            </button>
+        </form>
+    </div>
+</body>
+
+</html>
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").attr("disabled", true);
+        $("#divLogin").hide();
+        var password = false;
+        var passwordStatus = "";
+        var database = {};
+        $("form").submit(function (event) {
+            saveData();
+            $("#feedback").text("");
+            $("#btnSubmit").attr("disabled", true);
+            $("#btnSubmit").removeClass("btn-success");
+            $("#btnSubmit").addClass("btn-primary");
+            event.preventDefault();
+        });
+
+        var saveData = function () {
+            let fname = $("#inputfname").val();
+            let lname = $("#inputlname").val();
+            let name = fname + " " + lname;
+            let email = $("#inputEmail4").val();
+            let password = $("#inputPassword4").val();
+            let address = $("#inputAddress").val();
+
+            database[email] = [name, email, password, address];
+            $("input").val("");
+        }
+
+        $("#navLogin").click(function () {
+            $("#divFrom").hide();
+            $("#divLogin").show();
+            $(this).addClass("active");
+            $("#navSignup").removeClass("active");
+        });
+
+        $("#navSignup").click(function () {
+            $("#divFrom").show();
+            $("#divLogin").hide();
+            $(this).addClass("active");
+            $("#navLogin").removeClass("active");
+
+        });
+
+        $("#btnLogin").click(function () {
+            let key = $("#loginEmail").val();
+            let loginPass = $("#loginPassword").val();
+            if (key != null && loginPass != null && key != "" && loginPass != "") {
+                if (loginPass == database[key][2]) {
+                    console.log("Success!");
+                    console.log("Name: " + database[key][0]);
+                    console.log("email : " + key);
+                    console.log("password: " + database[key][2]);
+                    console.log("Address: " + database[key][3])
+                } else {
+                    alert("Incorrect email or password !");
+                }
+            }
+        });
+
+        $("#inputPassword4").keyup(function () {
+            var passVal = $("#inputPassword4").val();
+            var passLen = $("#inputPassword4").val().length;
+            var list = passVal.split("");
+            var num = 0, upper = 0, lower = 0, special = 0;
+            var specialChars = "<>@!#$%^&*()_+[]{}?:;|'\"\\,./~`-=";
+            var isSymbol = function (charToCheck) {
+                for (let i = 0; i < specialChars.length; i++) {
+                    if (charToCheck.indexOf(specialChars[i]) > -1) {
+                        return true
+                    }
+                }
+                return false;
+            }
+            for (let i = 0; i < passLen; ++i) {
+                let ch = list[i];
+                if (isSymbol(ch)) {
+                    special = 1;
+                }
+                if (ch.match(new RegExp('[0-9]'))) {
+                    num = 1;
+                } else if (ch.match(new RegExp('[A-Z]'))) {
+                    upper = 1;
+                } else if (ch.match(new RegExp('[a-z]'))) {
+                    lower = 1;
+                }
+            }
+            if (passLen < 8) {
+                passwordStatus = " password is too short!";
+                $("#feedback").css({ "color": "red" });
+            } else {
+                if (passLen > 16) {
+                    passwordStatus = " password is too long!";
+                    $("#feedback").css({ "color": "red" });
+                } else if (num + upper + lower + special == 4) {
+                    passwordStatus = " Strong password"
+                    $("#feedback").css({ "color": "green" });
+                    password = true;
+                } else {
+                    passwordStatus = " Weak password!";
+                    $("#feedback").css({ "color": "red" });
+                }
+            }
+            if (!password) {
+                $("#feedback").text(passwordStatus);
+            } else {
+                $("#feedback").text(passwordStatus);
+                $("#btnSubmit").attr("disabled", false);
+                $("#btnSubmit").removeClass("btn-primary");
+                $("#btnSubmit").addClass("btn-success");
+            }
+        });
+    });
+
+</script>
